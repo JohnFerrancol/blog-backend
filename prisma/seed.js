@@ -3,6 +3,9 @@ import { prisma } from '../src/config/prisma.js';
 async function main() {
   // Reset DB
   await prisma.$executeRawUnsafe(
+    'TRUNCATE TABLE "Comment" RESTART IDENTITY CASCADE;'
+  );
+  await prisma.$executeRawUnsafe(
     'TRUNCATE TABLE "Post" RESTART IDENTITY CASCADE;'
   );
   await prisma.$executeRawUnsafe(
