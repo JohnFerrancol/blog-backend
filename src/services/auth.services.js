@@ -13,6 +13,16 @@ const getUserByName = async (username) => {
   return user;
 };
 
+const getUserById = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  return user;
+};
+
 const insertUser = async (username, password) => {
   const normalizedUsername = normalizeUsername(username);
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,4 +42,4 @@ const insertUser = async (username, password) => {
   }
 };
 
-export { getUserByName, insertUser };
+export { getUserByName, getUserById, insertUser };

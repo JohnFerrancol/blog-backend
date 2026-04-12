@@ -12,6 +12,17 @@ const generateToken = (user) => {
   );
 };
 
+const getUser = (req, res) => {
+  res.json({
+    status: 'sucess',
+    message: 'User information retrieved successfully',
+    user: {
+      id: req.user.id,
+      username: req.user.username,
+    },
+  });
+};
+
 const registerUser = [
   newUserValidator,
   async (req, res) => {
@@ -74,4 +85,4 @@ const loginUser = async (req, res, next) => {
   })(req, res, next);
 };
 
-export { registerUser, loginUser };
+export { getUser, registerUser, loginUser };

@@ -1,7 +1,9 @@
 import passport from 'passport';
 import bcrypt from 'bcryptjs';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { getUserByName } from '../services/auth.services.js';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { getUserByName, getUserById } from '../services/auth.services.js';
+import 'dotenv/config';
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
@@ -23,6 +25,27 @@ passport.use(
       return done(null, user);
     } catch (err) {
       done(err);
+    }
+  })
+);
+
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
+
+passport.use(
+  new JwtStrategy(options, async (payload, done) => {
+    try {
+      const user = await getUserById(payload.userId);
+
+      if (!user) {
+        return done(null, false);
+      }
+
+      return done(null, user);
+    } catch (err) {
+      return done(err, false);
     }
   })
 );
