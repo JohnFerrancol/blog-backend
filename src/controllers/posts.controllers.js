@@ -1,4 +1,4 @@
-import { getAllPosts } from '../services/posts.services.js';
+import { getAllPosts, getPostById } from '../services/posts.services.js';
 
 const getPosts = async (req, res) => {
   try {
@@ -17,4 +17,21 @@ const getPosts = async (req, res) => {
   }
 };
 
-export { getPosts };
+const getSinglePost = async (req, res) => {
+  try {
+    const post = await getPostById(Number(req.params.id));
+
+    res.json({
+      status: 'success',
+      message: `Received Post: ${post.id}`,
+      post: post,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
+export { getPosts, getSinglePost };

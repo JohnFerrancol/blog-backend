@@ -13,6 +13,36 @@ const getAllPosts = async () => {
   });
 };
 
+const getPostById = async (postId) => {
+  return await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    include: {
+      comments: {
+        select: {
+          id: true,
+          content: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+    },
+  });
+};
+
 const insertPost = async (title, content, authorId) => {
   return await prisma.post.create({
     data: {
@@ -23,4 +53,4 @@ const insertPost = async (title, content, authorId) => {
   });
 };
 
-export { getAllPosts, insertPost };
+export { getAllPosts, getPostById, insertPost };
