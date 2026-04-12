@@ -6,6 +6,7 @@ import createLocals from './middleware/locals.middleware.js';
 import errorHandler from './middleware/errors.middleware.js';
 
 import authRouter from './routes/auth.routes.js';
+import postsRouter from './routes/posts.routes.js';
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/posts', postsRouter);
 
 app.use(errorHandler);
 

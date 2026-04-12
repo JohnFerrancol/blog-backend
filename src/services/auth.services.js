@@ -23,7 +23,7 @@ const getUserById = async (id) => {
   return user;
 };
 
-const insertUser = async (username, password) => {
+const insertUser = async (username, password, role = 'user') => {
   const normalizedUsername = normalizeUsername(username);
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,6 +32,7 @@ const insertUser = async (username, password) => {
       data: {
         username: normalizedUsername,
         password: hashedPassword,
+        role: role,
       },
     });
   } catch (err) {
