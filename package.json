@@ -11,7 +11,8 @@
     "explore": "prisma studio --config ./prisma.config.js",
     "prisma:gen": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate deploy",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "build": "npm install && npm run prisma:gen && npm run prisma:migrate && npm run seed"
   },
   "keywords": [],
   "author": "",
