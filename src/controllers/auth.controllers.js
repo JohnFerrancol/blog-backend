@@ -19,6 +19,7 @@ const getUser = (req, res) => {
     user: {
       id: req.user.id,
       username: req.user.username,
+      role: req.user.role,
     },
   });
 };
