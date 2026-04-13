@@ -59,7 +59,7 @@ cp .env.example .env
 4. Run prisma migrations to create the database tables
 
 ```sh
-npx prisma migrate dev 
+npx prisma migrate dev
 ```
 
 5. Generate prisma client
@@ -78,6 +78,6 @@ npm run start
 
 ## Roadmap
 
-- [ ] Add Authentication Routes to the API using Passport.js, using the local strategy for Authentication and the JWT strategy for Authorisation
-- [ ] Add Routes for the public users to the API to allow users to view and comment on posts/blogs
+- [x] Add Authentication Routes to the API using Passport.js, using the local strategy for Authentication and the JWT strategy for Authorisation
+- [x] Add Routes for the public users to the API to allow users to view and comment on posts/blogs
 - [ ] Add Routes for the admin users to the API to allow admin users to create, edit and delete posts
