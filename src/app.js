@@ -19,7 +19,7 @@ app.use(createLocals);
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'blog-frontend-three-wine.vercel.app'],
   })
 );
 
