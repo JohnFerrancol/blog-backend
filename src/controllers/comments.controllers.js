@@ -1,7 +1,10 @@
 import {
   getCommentById,
   deleteCommentById,
+  updateCommentById,
 } from '../services/comments.services.js';
+import newCommentValidator from '../validators/comment.validators.js';
+import { validationResult, matchedData } from 'express-validator';
 
 const verifyCommentOwnership = async (commentId, user) => {
   const comment = await getCommentById(commentId);
@@ -16,6 +19,59 @@ const verifyCommentOwnership = async (commentId, user) => {
 
   return comment;
 };
+
+const updateComment = [
+  newCommentValidator,
+  async (req, res) => {
+    const user = req.user;
+    const commentId = Number(req.params.id);
+
+    const result = await verifyCommentOwnership(commentId, user);
+
+    if (result.error === 'NOT_FOUND') {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Comment not found',
+      });
+    }
+
+    if (result.error === 'FORBIDDEN') {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Forbidden as comment does not belong to you',
+      });
+    }
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid user inputs given',
+        errorArray: errors.array(),
+      });
+    }
+
+    try {
+      const { comment } = matchedData(req);
+      const updatedComment = await updateCommentById(commentId, comment);
+
+      res.status(201).json({
+        status: 'success',
+        message: 'Comment updated successfully',
+        comment: {
+          id: updatedComment.id,
+          content: updatedComment.content,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+  },
+];
 
 const deleteComment = async (req, res) => {
   const commentId = Number(req.params.id);
@@ -54,4 +110,4 @@ const deleteComment = async (req, res) => {
   }
 };
 
-export { deleteComment };
+export { updateComment, deleteComment };
