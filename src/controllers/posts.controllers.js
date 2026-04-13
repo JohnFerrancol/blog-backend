@@ -3,6 +3,7 @@ import {
   getPostById,
   insertPost,
   updatePost,
+  deletePostById,
 } from '../services/posts.services.js';
 import { insertComment } from '../services/comments.services.js';
 import newCommentValidator from '../validators/comment.validators.js';
@@ -149,6 +150,44 @@ const editPost = [
   },
 ];
 
+const deletePost = async (req, res) => {
+  const user = req.user;
+  const postId = Number(req.params.id);
+
+  const result = await verifyPostOwnership(postId, user);
+
+  if (result.error === 'NOT_FOUND') {
+    return res.status(404).json({
+      status: 'error',
+      message: 'Comment not found',
+    });
+  }
+
+  if (result.error === 'FORBIDDEN') {
+    return res.status(403).json({
+      status: 'error',
+      message: 'Forbidden as post does not belong to you',
+    });
+  }
+
+  try {
+    await deletePostById(postId);
+
+    res.json({
+      status: 'success',
+      message: `Post deleted successfully`,
+      comment: {
+        id: postId,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+};
+
 const createComment = [
   newCommentValidator,
   async (req, res) => {
@@ -186,4 +225,11 @@ const createComment = [
   },
 ];
 
-export { getPosts, getSinglePost, createPost, editPost, createComment };
+export {
+  getPosts,
+  getSinglePost,
+  createPost,
+  editPost,
+  deletePost,
+  createComment,
+};
