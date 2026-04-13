@@ -59,4 +59,16 @@ const insertPost = async (title, content, authorId) => {
   });
 };
 
-export { getAllPosts, getPostById, insertPost };
+const updatePost = async (postId, title, content) => {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: {
+      title: title,
+      content: content,
+    },
+  });
+};
+
+export { getAllPosts, getPostById, insertPost, updatePost };

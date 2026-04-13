@@ -2,6 +2,7 @@ import {
   getAllPosts,
   getPostById,
   insertPost,
+  updatePost,
 } from '../services/posts.services.js';
 import { insertComment } from '../services/comments.services.js';
 import newCommentValidator from '../validators/comment.validators.js';
@@ -79,6 +80,75 @@ const createPost = [
   },
 ];
 
+const verifyPostOwnership = async (postId, user) => {
+  const post = await getPostById(postId);
+
+  if (!post) {
+    return { error: 'NOT_FOUND' };
+  }
+
+  if (post.authorId !== user.id) {
+    return { error: 'FORBIDDEN' };
+  }
+
+  return post;
+};
+
+const editPost = [
+  newPostValidator,
+  async (req, res) => {
+    const user = req.user;
+    const postId = Number(req.params.id);
+
+    const result = await verifyPostOwnership(postId, user);
+
+    if (result.error === 'NOT_FOUND') {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Comment not found',
+      });
+    }
+
+    if (result.error === 'FORBIDDEN') {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Forbidden as post does not belong to you',
+      });
+    }
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid user inputs given',
+        errorArray: errors.array(),
+      });
+    }
+
+    const { title, content } = matchedData(req);
+
+    try {
+      const updatedPost = await updatePost(postId, title, content);
+
+      res.status(201).json({
+        status: 'success',
+        message: 'Post updated successfully',
+        comment: {
+          id: updatedPost.id,
+          title: updatedPost.title,
+          content: updatedPost.content,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+  },
+];
+
 const createComment = [
   newCommentValidator,
   async (req, res) => {
@@ -116,4 +186,4 @@ const createComment = [
   },
 ];
 
-export { getPosts, getSinglePost, createPost, createComment };
+export { getPosts, getSinglePost, createPost, editPost, createComment };

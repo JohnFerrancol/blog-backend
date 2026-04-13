@@ -14,7 +14,7 @@ const newPostValidator = [
     .withMessage('Content is required')
     .bail()
     .isLength({ min: 20, max: 1000 })
-    .withMessage('Title must be between 20 and 1000 characters'),
+    .withMessage('Content must be between 20 and 1000 characters'),
 ];
 
 export default newPostValidator;
