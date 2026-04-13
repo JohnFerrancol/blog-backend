@@ -80,4 +80,4 @@ npm run start
 
 - [x] Add Authentication Routes to the API using Passport.js, using the local strategy for Authentication and the JWT strategy for Authorisation
 - [x] Add Routes for the public users to the API to allow users to view and comment on posts/blogs
-- [ ] Add Routes for the admin users to the API to allow admin users to create, edit and delete posts
+- [x] Add Routes for the admin users to the API to allow admin users to create, edit and delete posts
