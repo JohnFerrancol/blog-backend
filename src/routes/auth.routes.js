@@ -8,10 +8,10 @@ import { requireAuth } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-// HTTP request to fetch the user information
+// HTTP GET request to fetch the user information
 router.get('/me', requireAuth, getUser);
 
-// HTTP Request to register or login a user
+// HTTP POST Requests to register or login a user
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 

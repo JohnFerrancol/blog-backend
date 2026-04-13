@@ -1,5 +1,6 @@
 import passport from '../config/passport.js';
 
+// Middleware function to check whether a user is authenticated through a JWT token
 const requireAuth = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err) return next(err);
@@ -16,6 +17,7 @@ const requireAuth = (req, res, next) => {
   })(req, res, next);
 };
 
+// Middleware function to check whether the user is an admin
 const requireAdmin = (req, res, next) => {
   if (req.user.role !== 'admin') {
     return res.status(403).json({

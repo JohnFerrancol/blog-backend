@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 
-import createLocals from './middleware/locals.middleware.js';
 import errorHandler from './middleware/errors.middleware.js';
 
 import authRouter from './routes/auth.routes.js';
@@ -15,8 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(createLocals);
-
+// Set up CORS for the local React app as well as the deployed Vercel App
 app.use(
   cors({
     origin: [
@@ -26,6 +24,7 @@ app.use(
   })
 );
 
+// Handle the different routes in the Express server
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/posts', postsRouter);
 app.use('/api/v1/comments', commentsRouter);

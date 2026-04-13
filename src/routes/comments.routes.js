@@ -7,6 +7,7 @@ import { requireAuth } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
+// HTTP PUT and DELETE requests to edit and delete an existing comment
 router.put('/:id', requireAuth, updateComment);
 router.delete('/:id', requireAuth, deleteComment);
 

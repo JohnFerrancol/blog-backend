@@ -10,6 +10,7 @@ import newCommentValidator from '../validators/comment.validators.js';
 import newPostValidator from '../validators/posts.validators.js';
 import { validationResult, matchedData } from 'express-validator';
 
+// Middleware function to retrieve all posts in the application
 const getPosts = async (req, res) => {
   try {
     const posts = await getAllPosts();
@@ -27,6 +28,7 @@ const getPosts = async (req, res) => {
   }
 };
 
+// Middleware function to retrieve a single post
 const getSinglePost = async (req, res) => {
   try {
     const post = await getPostById(Number(req.params.id));
@@ -44,6 +46,7 @@ const getSinglePost = async (req, res) => {
   }
 };
 
+// Middleware function used to create a post and validate the inputs using express-validator
 const createPost = [
   newPostValidator,
   async (req, res) => {
@@ -81,6 +84,7 @@ const createPost = [
   },
 ];
 
+// Function to check if the post queried belongs to the user
 const verifyPostOwnership = async (postId, user) => {
   const post = await getPostById(postId);
 
@@ -95,6 +99,7 @@ const verifyPostOwnership = async (postId, user) => {
   return post;
 };
 
+// Middleware used to edit an existing post and validate the inputs through express-validator
 const editPost = [
   newPostValidator,
   async (req, res) => {
@@ -150,6 +155,7 @@ const editPost = [
   },
 ];
 
+// Middleware used to delete an existing post
 const deletePost = async (req, res) => {
   const user = req.user;
   const postId = Number(req.params.id);
@@ -188,6 +194,7 @@ const deletePost = async (req, res) => {
   }
 };
 
+// Middleware used to create a comment and validate the user inputs through express-validator
 const createComment = [
   newCommentValidator,
   async (req, res) => {

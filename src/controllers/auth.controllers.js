@@ -12,6 +12,7 @@ const generateToken = (user) => {
   );
 };
 
+// Middleware function to obtain the information about the current user
 const getUser = (req, res) => {
   res.json({
     status: 'sucess',
@@ -24,6 +25,7 @@ const getUser = (req, res) => {
   });
 };
 
+// Middleware function used to register the user and validate the inputs through express-validator and send the user the generated JWT token
 const registerUser = [
   newUserValidator,
   async (req, res) => {
@@ -61,6 +63,7 @@ const registerUser = [
   },
 ];
 
+// Middleware function used to login the user and authenticate through Passport.js local strategy and send the user the generated JWT token
 const loginUser = async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) return next(err);

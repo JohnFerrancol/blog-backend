@@ -6,6 +6,7 @@ import {
 import newCommentValidator from '../validators/comment.validators.js';
 import { validationResult, matchedData } from 'express-validator';
 
+// Function to check if the comment queried belongs to the user
 const verifyCommentOwnership = async (commentId, user) => {
   const comment = await getCommentById(commentId);
 
@@ -20,6 +21,7 @@ const verifyCommentOwnership = async (commentId, user) => {
   return comment;
 };
 
+// Middleware function used to update the existing comment and validate the inputs through express-validator
 const updateComment = [
   newCommentValidator,
   async (req, res) => {
@@ -73,6 +75,7 @@ const updateComment = [
   },
 ];
 
+// Middleware function used to delete an existing comment
 const deleteComment = async (req, res) => {
   const commentId = Number(req.params.id);
   const user = req.user;

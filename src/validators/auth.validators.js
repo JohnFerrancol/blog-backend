@@ -11,6 +11,7 @@ const newUserValidator = [
     .withMessage('Username must be between 6 and 30 characters')
     .bail()
     .custom(async (value) => {
+      // Custom validator to ensure that the username has not been used before
       const user = await getUserByName(value);
 
       if (user) {
@@ -35,6 +36,7 @@ const newUserValidator = [
     .withMessage('Please confirm your password')
     .bail()
     .custom((value, { req }) => {
+      // Custom validator to enusre the confirm-password and the password fields match
       if (value !== req.body.password) {
         throw new Error('Passwords do not match');
       }
