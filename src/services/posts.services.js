@@ -10,6 +10,9 @@ const getAllPosts = async () => {
         },
       },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 };
 
@@ -31,6 +34,9 @@ const getPostById = async (postId) => {
           },
           createdAt: true,
           updatedAt: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       },
       author: {
