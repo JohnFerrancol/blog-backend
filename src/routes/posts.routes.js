@@ -3,12 +3,14 @@ import {
   getPosts,
   getSinglePost,
   createComment,
+  createPost,
 } from '../controllers/posts.controllers.js';
-import { requireAuth } from '../middleware/auth.middleware.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
 router.get('/', getPosts);
+router.post('/', requireAuth, requireAdmin, createPost);
 
 router.get('/:id', getSinglePost);
 

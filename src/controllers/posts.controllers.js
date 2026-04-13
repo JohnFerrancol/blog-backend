@@ -1,6 +1,11 @@
-import { getAllPosts, getPostById } from '../services/posts.services.js';
+import {
+  getAllPosts,
+  getPostById,
+  insertPost,
+} from '../services/posts.services.js';
 import { insertComment } from '../services/comments.services.js';
 import newCommentValidator from '../validators/comment.validators.js';
+import newPostValidator from '../validators/posts.validators.js';
 import { validationResult, matchedData } from 'express-validator';
 
 const getPosts = async (req, res) => {
@@ -36,6 +41,43 @@ const getSinglePost = async (req, res) => {
     });
   }
 };
+
+const createPost = [
+  newPostValidator,
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Invalid user inputs given',
+        errorArray: errors.array(),
+      });
+    }
+
+    const user = req.user;
+    const { title, content } = matchedData(req);
+
+    try {
+      const newPost = await insertPost(title, content, user.id);
+
+      res.status(201).json({
+        status: 'success',
+        message: 'Post added successfully',
+        comment: {
+          id: newPost.id,
+          title: newPost.title,
+          content: newPost.content,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
+  },
+];
 
 const createComment = [
   newCommentValidator,
@@ -74,4 +116,4 @@ const createComment = [
   },
 ];
 
-export { getPosts, getSinglePost, createComment };
+export { getPosts, getSinglePost, createPost, createComment };

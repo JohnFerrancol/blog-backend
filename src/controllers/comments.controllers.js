@@ -95,7 +95,7 @@ const deleteComment = async (req, res) => {
   try {
     await deleteCommentById(commentId);
 
-    res.status(200).json({
+    res.json({
       status: 'success',
       message: `Comment deleted successfully`,
       comment: {

@@ -16,4 +16,15 @@ const requireAuth = (req, res, next) => {
   })(req, res, next);
 };
 
-export { requireAuth };
+const requireAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({
+      status: 'error',
+      message: 'Admins only',
+    });
+  }
+
+  next();
+};
+
+export { requireAuth, requireAdmin };
