@@ -1,4 +1,4 @@
-# Express Template
+# Blog Back-end
 
 [Link To Front End Repository](https://github.com/JohnFerrancol/blog-frontend)<br/><br/>
 [![The Odin Project](https://img.shields.io/badge/The%20Odin%20Project-A9792B?logo=theodinproject&logoColor=fff)](#)
